@@ -3,7 +3,7 @@ frameworkVersion: '3'
 useDotenv: true
 
 plugins:
-  - serverless-webpack
+#   - serverless-webpack
   - serverless-offline
 
 provider:

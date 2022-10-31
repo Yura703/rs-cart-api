@@ -1,6 +1,7 @@
-import { IgnorePlugin } from 'webpack';
+/* eslint-disable @typescript-eslint/no-var-requires */
+const IgnorePlugin = require('webpack');
 
-export default function (options) {
+module.exports = function (options) {
   const lazyImports = [
     '@nestjs/microservices/microservices-module',
     '@nestjs/websockets/socket-module',
@@ -23,9 +24,9 @@ export default function (options) {
         },
       }),
     ],
-    output: {
-      ...options.output,
-      libraryTarget: 'commonjs2',
-    },
+    // output: {
+    //   ...options.output,
+    //   libraryTarget: 'commonjs2',
+    // },
   };
 };
