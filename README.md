@@ -1,3 +1,8 @@
+endpoints:
+  ANY - https://8hzfsoyum9.execute-api.eu-west-1.amazonaws.com/dev/
+  ANY - https://8hzfsoyum9.execute-api.eu-west-1.amazonaws.com/dev/{proxy+}
+
+
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo_text.svg" width="320" alt="Nest Logo" /></a>
 </p>
