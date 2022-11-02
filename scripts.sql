@@ -21,13 +21,12 @@ VALUES('a25e0111-3d8e-4937-b38d-20f5c292d223', '18070ad8-524a-472c-8af4-42ec8937
 
 
 CREATE TABLE orders (
-    id uuid,
-    user_id uuid,
-    cart_id uuid (Foreign key from carts.id),
-    payment JSON,
-    delivery JSON,
-    comments text,
-    status ENUM or text,
-    total number,
+    id uuid primary key default uuid_generate_v4(),
+    user_id uuid NOT NULL,
+    cart_id uuid NOT NULL,
+    payment JSONB,
+    delivery JSONB,
+    comments TEXT,
+    status TEXT,
+    total INTEGER NOT NULL
 )
-
