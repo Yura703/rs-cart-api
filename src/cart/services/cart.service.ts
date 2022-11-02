@@ -6,13 +6,13 @@ import { Cart } from '../cart.entity';
 
 @Injectable()
 export class CartService {
-  constructor(private readonly userRepository: Repository<Cart>) {};
+  constructor(private readonly cartRepository: Repository<Cart>) {};
 
-  findByUserId(userId: string) {
-    return this.userRepository.findOne({where: {id: userId}});
+  async findByUserId(userId: string) {
+    return this.cartRepository.findOne({where: {id: userId}});
   }
 
-  createByUserId(userId: string) {
+  async createByUserId(userId: string) {
     const id = v4(v4());
     const userCart = {
       id,
@@ -20,21 +20,28 @@ export class CartService {
       items: [],
     };
 
-    return this.userRepository.save(userCart);    
+    return this.cartRepository.save(userCart);    
   }
 
-  /*findOrCreateByUserId(userId: string): Cart {
-    const userCart = this.findByUserId(userId);
+  async findOrCreateByUserId(userId: string) {
+    const userCart = await this.findByUserId(userId);
 
     if (userCart) {
       return userCart;
     }
 
-    return this.createByUserId(userId);
+    const newCart = {
+      id: v4(),
+      user: userCart, 
+      created_at: new Date(),
+      updated_at: new Date(),
+    };
+
+    return this.cartRepository.save( newCart);    
   }
 
-  updateByUserId(userId: string, { items }: Cart): Cart {
-    const { id, ...rest } = this.findOrCreateByUserId(userId);
+  async updateByUserId(userId: string, { items }: Cart) {
+    const { id, ...rest } = await this.findOrCreateByUserId(userId);
 
     const updatedCart = {
       id,
@@ -42,13 +49,11 @@ export class CartService {
       items: [ ...items ],
     }
 
-    this.userCarts[ userId ] = { ...updatedCart };
-
-    return { ...updatedCart };
+    return this.cartRepository.update( id, updatedCart);     
   }
 
-  removeByUserId(userId): void {
-    this.userCarts[ userId ] = null;
+  async removeByUserId(userId: string) {
+    const entity = await this.findByUserId(userId);
+    return this.cartRepository.remove(entity);
   }
-*/
 }
