@@ -30,3 +30,16 @@ CREATE TABLE orders (
     status TEXT,
     total INTEGER NOT NULL
 )
+
+CREATE TABLE users (
+  id uuid primary key default uuid_generate_v4(),
+  name TEXT NOT NULL,
+  email TEXT,
+  password TEXT,
+  cart_id uuid,
+);
+
+ALTER TABLE users ADD CONSTRAINT FK_USER_CART FOREIGN KEY (cart_id) REFERENCES carts(id) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+INSERT INTO users (id, name, email, password, cart_id) 
+VALUES('a25e0111-3d8e-4937-b38d-20f5c292d224', 'Yura', yura@tut.by, 123, 'a25e0111-3d8e-4937-b38d-20f5c292d223')
