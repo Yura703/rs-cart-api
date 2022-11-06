@@ -1,17 +1,17 @@
 import { Injectable } from '@nestjs/common';
 import { v4 } from 'uuid';
-
-import { Order } from '../models';
+import { Repository } from 'typeorm';
+import { Order } from '../order.entity';
 
 @Injectable()
 export class OrderService {
-  private orders: Record<string, Order> = {}
+  constructor(private readonly orderRepository: Repository<Order>) {};
 
-  findById(orderId: string): Order {
-    return this.orders[ orderId ];
+  async findById(orderId: string) {
+    return this.orderRepository.findOne({where: {id: orderId}});
   }
 
-  create(data: any) {
+  async create(data: any) {
     const id = v4(v4())
     const order = {
       ...data,
@@ -19,21 +19,20 @@ export class OrderService {
       status: 'inProgress',
     };
 
-    this.orders[ id ] = order;
-
-    return order;
+    return this.orderRepository.save(order);
   }
 
-  update(orderId, data) {
+  async update(orderId, data) {
     const order = this.findById(orderId);
 
     if (!order) {
       throw new Error('Order does not exist.');
     }
 
-    this.orders[ orderId ] = {
+    const newOrder = {
       ...data,
       id: orderId,
     }
+    return this.orderRepository.update(orderId,newOrder);
   }
 }
